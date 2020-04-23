@@ -5,22 +5,28 @@ import './App.css'
 export default class App extends React.Component {
 	constructor() {
 		super()
+		this.getExpressServerStatus()
 		this.state = {
 			SnackBarOn: false,
-			SnackBarText: null
+			SnackBarText: null,
+			WakeOnLanAvailable: false
 		}
 	}
 
 	render() {
-		if(this.getExpressServerStatus() === 200){
-		return (
-			<div>
-				<button onClick={this.wol}>Wake On Lan</button>
-				{this.state.SnackBarOn === true ? <SnackBar text={this.state.SnackBarText} /> : ''}
-			</div>
-		)
-		}else{
-			return (null)
+		if (this.state.WakeOnLanAvailable === true) {
+			return (
+				<div>
+					<button onClick={this.wol}>Wake On Lan</button>
+					{this.state.SnackBarOn === true ? (
+						<SnackBar text={this.state.SnackBarText} />
+					) : (
+						''
+					)}
+				</div>
+			)
+		} else {
+			return null
 		}
 	}
 
@@ -37,12 +43,12 @@ export default class App extends React.Component {
 			method: 'GET'
 		})
 			.then((response) => {
-				console.log(response)
-				return response.status
+				this.setState({ WakeOnLanAvailable: true })
 			})
 			.catch((err) => {
 				console.log(err)
 			})
+		return true
 	}
 
 	sendSnackBar = (message) => {

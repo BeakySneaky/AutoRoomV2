@@ -32,9 +32,9 @@ export default class App extends React.Component {
 			that.timeout = 250
 			clearTimeout(connectInterval)
 		}
-		ws.onmessage = (evt) => {
+		ws.onmessage = (e) => {
 			// listen to data sent from the websocket server
-			const message = evt.data
+			const message = e.data
 			if(message === "WOL_Success"){
 				this.sendSnackBar('WOL request sent !')
 			}
@@ -72,7 +72,6 @@ export default class App extends React.Component {
 	wol = () => {
 		const { ws } = this.state
 		ws.send('WOL')
-		//this.sendSnackBar('WOL request sent !')
 	}
 
 	sendSnackBar = (message) => {

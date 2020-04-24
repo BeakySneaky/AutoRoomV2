@@ -15,15 +15,6 @@ let wsServer = new webSocketServer({
 // I'm maintaining all active connections in this object
 let clients = []
 
-// This code generates unique userid for everyuser.
-const getUniqueID = () => {
-	const s4 = () =>
-		Math.floor((1 + Math.random()) * 0x10000)
-			.toString(16)
-			.substring(1)
-	return s4() + s4() + '-' + s4()
-}
-
 wsServer.on('request', function (request) {
 	//let userID = getUniqueID()
 	//let userID = "user" + clients.length + 1
@@ -31,7 +22,7 @@ wsServer.on('request', function (request) {
 	console.log(new Date() + ' Recieved a new connection from origin ' + request.origin + '.')
 	let connection = request.accept(null, request.origin)
 	//clients[userID] = connection
-	var index = clients.push(connection) - 1;
+	let index = clients.push(connection) - 1;
 	console.log('connected: ' + index + ' in ' + Object.getOwnPropertyNames(clients))
 	connection.on('message', function (message) {
 		if (message.type === 'utf8') {
